@@ -1,0 +1,9 @@
+name: Preference
+version: '${project.version}'
+main: me.natertot.preference.Preference
+api-version: 1.12.2
+commands:
+  pref:
+    description: Opens the inventory /pref
+    aliases: [preference, preferences]
+
