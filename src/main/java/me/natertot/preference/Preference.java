@@ -3,17 +3,28 @@ package me.natertot.preference;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Preference extends JavaPlugin {
-
+    private static Preference instance;
+    private PreferenceMenu preferenceMenu;
     @Override
     public void onEnable() {
         // Plugin startup logic
-        getCommand("pref").setExecutor(new MenuCommand());
+        instance = this;
 
-        getServer().getPluginManager().registerEvents(new MenuListener(),this);
+        preferenceMenu = new PreferenceMenu();
+        getCommand("pref").setExecutor(new OpenPreferenceMenuCommand());
+
+        getServer().getPluginManager().registerEvents(preferenceMenu,this);
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+
+    }
+    public static Preference getInstance() {
+        return instance;
+    }
+    public PreferenceMenu getPreferenceMenu() {
+        return preferenceMenu;
     }
 }
