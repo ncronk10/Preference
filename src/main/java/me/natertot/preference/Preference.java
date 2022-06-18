@@ -12,6 +12,7 @@ public final class Preference extends JavaPlugin {
 
         preferenceMenu = new PreferenceMenu();
         getCommand("pref").setExecutor(new OpenPreferenceMenuCommand());
+        getCommand("prefadmin").setExecutor(new AdminCommands());
 
         getServer().getPluginManager().registerEvents(preferenceMenu,this);
     }
