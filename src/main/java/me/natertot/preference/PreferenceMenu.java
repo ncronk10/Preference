@@ -33,13 +33,31 @@ public class PreferenceMenu implements Listener {
     public void reload() {
         FileConfiguration config = Preference.getInstance().getConfig();
         config.options().copyDefaults(true);
+        ArrayList<String> lore = new ArrayList<>();
 
         config.addDefault("menu.rewardsToggle.slot",10);
         config.addDefault("menu.rewardsToggle.name","Toggle Rewards");
         config.addDefault("menu.rewardsToggle.lore", new ArrayList<>());
         config.addDefault("menu.rewardsToggle.material","PRISMARINE_SHARD");
-        ArrayList<String> lore = new ArrayList<>();
+        config.addDefault("menu.messagesToggle.slot",12);
+        config.addDefault("menu.messagesToggle.name","Toggle Messages");
+        config.addDefault("menu.messagesToggle.lore", new ArrayList<>());
+        config.addDefault("menu.messagesToggle.material","PAPER");
+        config.addDefault("menu.invToggle.slot",14);
+        config.addDefault("menu.invToggle.name","Toggle Full Inventory");
+        config.addDefault("menu.invToggle.lore", new ArrayList<>());
+        config.addDefault("menu.invToggle.material","TORCH");
+        config.addDefault("menu.shopsToggle.slot",16);
+        config.addDefault("menu.shopsToggle.name","Toggle Shops");
+        config.addDefault("menu.shopsToggle.lore", new ArrayList<>());
+        config.addDefault("menu.shopsToggle.material","BEACON");
+        config.addDefault("menu.visionToggle.slot",26);
+        config.addDefault("menu.visionToggle.name","Toggle Night Vision");
+        config.addDefault("menu.visionToggle.lore", new ArrayList<>());
+        config.addDefault("menu.visionToggle.material","ENDER_PEARL");
         Preference.getInstance().saveConfig();
+
+        //Rewards
         shardSlot = config.getInt("menu.rewardsToggle.slot");
         shard = new ItemStack(Material.getMaterial(config.getString("menu.rewardsToggle.material")));
         ItemMeta shardMeta = shard.getItemMeta();
@@ -52,73 +70,53 @@ public class PreferenceMenu implements Listener {
         shard.setItemMeta(shardMeta);
         lore.clear();
 
-        config.addDefault("menu.messagesToggle.slot",12);
-        config.addDefault("menu.messagesToggle.name","Toggle Messages");
-        config.addDefault("menu.messagesToggle.lore", new ArrayList<>());
-        config.addDefault("menu.messagesToggle.material","PAPER");
-        ArrayList<String> lore1 = new ArrayList<>();
-        Preference.getInstance().saveConfig();
+        //Messages
         paperSlot = config.getInt("menu.rewardsToggle.slot");
         paper = new ItemStack(Material.getMaterial(config.getString("menu.messagesToggle.material")));
         ItemMeta paperMeta = paper.getItemMeta();
         shardMeta.setDisplayName(Colors.conv(config.getString("menu.messagesToggle.name")));
         for(String str : config.getStringList("menu.messagesToggle.lore")) {
-            lore1.add(Colors.conv(str));
+            lore.add(Colors.conv(str));
         }
-        paperMeta.setLore(lore1);
+        paperMeta.setLore(lore);
         paper.setItemMeta(paperMeta);
-        lore1.clear();
+        lore.clear();
 
-        config.addDefault("menu.invToggle.slot",14);
-        config.addDefault("menu.invToggle.name","Toggle Full Inventory");
-        config.addDefault("menu.invToggle.lore", new ArrayList<>());
-        config.addDefault("menu.invToggle.material","TORCH");
-        ArrayList<String> lore2 = new ArrayList<>();
-        Preference.getInstance().saveConfig();
+        //Inventory
         torchSlot = config.getInt("menu.invToggle.slot");
         torch = new ItemStack(Material.getMaterial(config.getString("menu.invToggle.material")));
         ItemMeta torchMeta = torch.getItemMeta();
         torchMeta.setDisplayName(Colors.conv(config.getString("menu.invToggle.name")));
         for(String str : config.getStringList("menu.invToggle.lore")) {
-            lore2.add(Colors.conv(str));
+            lore.add(Colors.conv(str));
         }
-        torchMeta.setLore(lore2);
+        torchMeta.setLore(lore);
         paper.setItemMeta(torchMeta);
-        lore2.clear();
+        lore.clear();
 
-        config.addDefault("menu.shopsToggle.slot",16);
-        config.addDefault("menu.shopsToggle.name","Toggle Shops");
-        config.addDefault("menu.shopsToggle.lore", new ArrayList<>());
-        config.addDefault("menu.shopsToggle.material","BEACON");
-        ArrayList<String> lore3 = new ArrayList<>();
-        Preference.getInstance().saveConfig();
+        //Shops
         beaconSlot = config.getInt("menu.rewardsToggle.slot");
         beacon = new ItemStack(Material.getMaterial(config.getString("menu.shopsToggle.material")));
         ItemMeta beaconMeta = beacon.getItemMeta();
         beaconMeta.setDisplayName(Colors.conv(config.getString("menu.shopsToggle.name")));
         for(String str : config.getStringList("menu.shopsToggle.lore")) {
-            lore3.add(Colors.conv(str));
+            lore.add(Colors.conv(str));
         }
-        paperMeta.setLore(lore3);
+        paperMeta.setLore(lore);
         beacon.setItemMeta(paperMeta);
-        lore3.clear();
+        lore.clear();
 
-        config.addDefault("menu.visionToggle.slot",26);
-        config.addDefault("menu.visionToggle.name","Toggle Night Vision");
-        config.addDefault("menu.visionToggle.lore", new ArrayList<>());
-        config.addDefault("menu.visionToggle.material","ENDER_PEARL");
-        ArrayList<String> lore4 = new ArrayList<>();
-        Preference.getInstance().saveConfig();
+        //Night Vision
         epearlSlot = config.getInt("menu.visionToggle.slot");
         epearl = new ItemStack(Material.getMaterial(config.getString("menu.visionToggle.material")));
         ItemMeta epearlMeta = epearl.getItemMeta();
         epearlMeta.setDisplayName(Colors.conv(config.getString("menu.visionToggle.name")));
         for(String str : config.getStringList("menu.visionToggle.lore")) {
-            lore4.add(Colors.conv(str));
+            lore.add(Colors.conv(str));
         }
-        epearlMeta.setLore(lore4);
+        epearlMeta.setLore(lore);
         epearl.setItemMeta(epearlMeta);
-        lore4.clear();
+        lore.clear();
 
 
     }
