@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -33,37 +34,38 @@ public class PreferenceMenu implements Listener {
     public void reload() {
         FileConfiguration config = Preference.getInstance().getConfig();
         config.options().copyDefaults(true);
-
         config.addDefault("menu.name","Preferences");
         config.addDefault("menu.rows",4);
         config.addDefault("menu.filler","white");
         config.addDefault("menu.items",new HashMap<>());
         Preference.getInstance().saveConfig();
 
+        inventoryItems.clear();
+
         String inventoryName = Colors.conv(config.getString("menu.name"));
         int inventorySize = config.getInt("menu.rows") * 9;
         ItemStack filler = ColoredItems.getGlassByName(config.getString("menu.filler"));
 
 
+        if (config.getConfigurationSection("menu.items") != null) {
+            for (String key : config.getConfigurationSection("menu.items").getKeys(false)) {
 
-        for (String key : config.getConfigurationSection("menu.items").getKeys(false)) {
+                String path = "menu.items." + key;
+                int slot = (config.getInt(path + ".slot"));
+                if (slot < 0 || slot >= inventorySize) {
+                    Bukkit.getLogger().warning("The material " + slot + " provided is out of bounds in " + path + "!");
+                    continue;
+                }
 
+                InventoryItem inventoryItem = new InventoryItem(
+                        config.getString(path + ".name"),
+                        config.getStringList(path + ".lore"),
+                        config.getString(path + ".material"),
+                        config.getStringList(path + ".commands")
+                );
 
-            String path = "menu.items." + key;
-            int slot = (config.getInt(path + ".slot"));
-            if(slot < 0 || slot >= inventorySize) {
-                Bukkit.getLogger().warning("The material "+ slot +" provided is out of bounds in " + path + "!");
-                continue;
+                inventoryItems.put(config.getInt(path + ".slot"), inventoryItem);
             }
-
-            InventoryItem inventoryItem = new InventoryItem(
-                    config.getString(path + ".name"),
-                    config.getStringList(path + ".lore"),
-                    config.getString(path + ".material"),
-                    config.getStringList(path + ".commands")
-            );
-
-            inventoryItems.put(config.getInt(path + ".slot"),inventoryItem);
         }
 
         inventory = Bukkit.createInventory(null, inventorySize, inventoryName);
@@ -98,10 +100,17 @@ public class PreferenceMenu implements Listener {
 
         }
     }
+
     @EventHandler
     public void onInventoryCloseEvent(InventoryCloseEvent e) {
         playersInInventory.remove(e.getPlayer().getUniqueId());
     }
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent e) {
+        DataConfig.loadPlayerPreferences(e.getPlayer());
+    }
+
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent e) {
         playersInInventory.remove(e.getPlayer().getUniqueId());

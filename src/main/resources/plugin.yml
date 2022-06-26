@@ -3,6 +3,8 @@ version: '${project.version}'
 main: me.natertot.preference.Preference
 api-version: 1.12.2
 depend:
+  - MineRewards
+  - PlayerLevels
   - ServerUtils
 commands:
   pref:
@@ -12,5 +14,5 @@ commands:
   prefadmin:
     description: Admin command
     permission: preference.admin
-    permission-message: Cannot use this unless you are an admin
+    permission-message: Insufficient permission
 
